@@ -1,42 +1,52 @@
-# Robo-advisor goal-based
+# Robo-advisor : optimisation de portefeuille goal-based
 
-Projet du groupe (Jules, Hugo, Raphael, Cian) pour le sujet 64 : "Robo-advisor : optimisation de portefeuille goal-based".
+(ECE – Ing4 Finance).
 
-## Contexte
-Les robo-advisors doivent piloter plusieurs objectifs financiers en parallele (retraite, immobilier, etudes) avec des horizons et des profils de risque differents. Le but est de proposer une allocation d'actifs qui respecte des contraintes metier tout en maximisant la probabilite d'atteindre chaque objectif.
+## Membres du groupe
+- Jules
+- Raphaël
+- Hugo
+- Cian
 
-## Objectifs du projet
-- Modeliser les objectifs comme contraintes (montant cible, horizon, probabilite de succes)
-- Optimiser l'allocation d'actifs sous contraintes de risque et de budget
-- Estimer les probabilites de succes via simulations Monte Carlo
-- Visualiser des scenarios et recommandations compréhensibles par un utilisateur
+## Objectif du projet
+Ce projet vise à concevoir un robo-advisor orienté objectifs (goal-based investing). L'objectif est d'allouer un portefeuille sous contraintes (budget, risque, liquidité, diversification) et de maximiser la probabilité d'atteindre un objectif financier donné. L'approche combine l'IA symbolique (modélisation par contraintes) et l'IA exploratoire (simulations Monte Carlo).
 
-## Approche proposee
-1. Formulation des objectifs et contraintes (CSP / optimisation convexe)
-2. Estimation des rendements et volatilites a partir de donnees historiques
-3. Simulations Monte Carlo pour evaluer la robustesse des allocations
-4. Interface simple pour explorer les scenarios
+## Approche générale
+- Définition de l'univers d'actifs et des hypothèses financières.
+- Modélisation des contraintes (budget, diversification, liquidité, risque).
+- Génération de portefeuilles candidats via optimisation.
+- Évaluation des portefeuilles par simulations Monte Carlo.
+- Sélection du portefeuille optimal en fonction du taux de réussite.
+- Interface utilisateur interactive pour paramétrer les objectifs et visualiser les résultats.
 
-## Technologies ciblees
-- Python
-- `cvxpy` pour l'optimisation convexe
-- `OR-Tools` pour les contraintes metier
-- `yfinance` pour les donnees de marche
-- `pandas`, `numpy` pour la manipulation de donnees
-- `plotly` ou `streamlit` pour la visualisation
+## Répartition des rôles
+La répartition est transversale : chaque membre intervient sur plusieurs étapes du pipeline, avec un rôle principal identifié.
 
-## Organisation du depot
+- Jules (lead interface) : interface Streamlit, visualisation, documentation utilisateur, et contribution aux tests de bout en bout. Fichiers principaux : `src/app_streamlit.py`, `docs/user_guide.md`, `docs/experiments.md`.
+- Raphaël (lead modélisation) : modélisation financière (rendements, volatilités, corrélations), hypothèses macro (inflation, taux, horizon), scénarios utilisateurs, et appui à la calibration des simulations. Fichiers principaux : `docs/model_assumptions.md`, `docs/experiments.md`.
+- Hugo (lead optimisation) : optimisation sous contraintes avec OR-Tools, formulation du modèle, et intégration des contraintes dans le pipeline de simulation. Fichiers principaux : `src/optimizer.py`, `src/constraints.py`, `docs/optimization_model.md`.
+- Cian (lead simulation) : simulation Monte Carlo et évaluation goal-based, intégration avec l'optimiseur, et synthèse des résultats. Fichiers principaux : `src/simulator.py`, `docs/experiments.md`, `docs/optimization_model.md`.
+
+## Structure du projet
 ```
 64/
 ├── README.md
 ├── src/
-├── notebooks/
-├── data/
-└── docs/
+│   ├── app_streamlit.py
+│   ├── optimizer.py
+│   ├── constraints.py
+│   ├── simulator.py
+│   └── data/
+├── docs/
+│   ├── user_guide.md
+│   ├── model_assumptions.md
+│   ├── optimization_model.md
+│   └── experiments.md
+└── slides/
 ```
 
 ## Installation
-Prerequis : Python 3.10+
+Prérequis : Python 3.10+
 
 ```bash
 python -m venv .venv
@@ -45,31 +55,14 @@ pip install -r requirements.txt
 ```
 
 ## Utilisation
-Exemples a venir. L'objectif e st de fournir :
-- un script pour lancer une optimisation sur un scenario
-- un notebook de demonstration
-- une interface simple pour comparer plusieurs objectifs
-
-## Tests
-Les tests unitaires seront ajoutes avec `pytest`.
+Lancer l'application Streamlit :
 
 ```bash
-pytest
+streamlit run src/app_streamlit.py
 ```
 
-## Resultats attendus
-- Allocation d'actifs par objectif
-- Probabilite de succes par objectif
-- Visualisations (frontiere risque/rendement, distribution des outcomes)
-
-## Roadmap
-- [ ] Definition des objectifs et des contraintes
-- [ ] Collecte et nettoyage des donnees
-- [ ] Prototype d'optimisation
-- [ ] Simulations Monte Carlo
-- [ ] Interface et visualisations
-
-## References
-- Robo-Advisors Beyond Automation: Principles and Roadmap for AI-Driven Financial Planning (2025)
-- InvestSuite : Goal-Based Personalized Investing
-- Build a Robo-Advisor with Python (From Scratch)
+## Résultats attendus
+- Allocation de portefeuille adaptée aux objectifs.
+- Probabilité d'atteinte de l'objectif financier.
+- Distribution des résultats issue des simulations Monte Carlo.
+- Comparaison de profils utilisateurs et de scénarios.
