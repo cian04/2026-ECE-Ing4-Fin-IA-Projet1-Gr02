@@ -45,7 +45,7 @@ pip install -r requirements.txt
 ```
 
 ## Utilisation
-Exemples a venir. L'objectif est de fournir :
+Exemples a venir. L'objectif e st de fournir :
 - un script pour lancer une optimisation sur un scenario
 - un notebook de demonstration
 - une interface simple pour comparer plusieurs objectifs
