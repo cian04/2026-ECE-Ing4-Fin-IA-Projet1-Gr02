@@ -1,7 +1,21 @@
 import numpy as np
 import pandas as pd
 
-def monte_carlo_simulation(expected_returns, cov_matrix, initial_investment, horizon_years, num_simulations=10000):
+
+"""Monte Carlo utilities
+
+Ce module contient des fonctions pour simuler la distribution finale
+des valeurs de portefeuille en fonction des rendements attendus,
+de la covariance et d'un vecteur de poids d'allocation.
+
+Notes :
+- Les simulations utilisent une approximation quotidienne (252 jours par an).
+- `weights` est appliqué chaque jour comme pondération des multiplicateurs
+    d'actifs pour obtenir la variation quotidienne du portefeuille.
+"""
+
+
+def monte_carlo_simulation(expected_returns, cov_matrix, initial_investment, horizon_years, num_simulations=10000, weights=None):
     """
     Simule les trajectoires de portefeuille via Monte Carlo.
 
@@ -18,20 +32,31 @@ def monte_carlo_simulation(expected_returns, cov_matrix, initial_investment, hor
     n_assets = len(expected_returns)
     num_days = horizon_years * 252  # Approximation
 
+    # Si pas de poids fournis, utiliser allocation égale
+    if weights is None:
+        weights = np.ones(n_assets) / n_assets
+    weights = np.array(weights)
+
     # Cholesky decomposition pour générer des rendements corrélés
     L = np.linalg.cholesky(cov_matrix)
 
     final_values = []
 
     for _ in range(num_simulations):
-        # Générer des rendements quotidiens aléatoires
+        # Générer des rendements quotidiens aléatoires (normaux)
         random_shocks = np.random.normal(0, 1, (num_days, n_assets))
-        daily_returns = np.exp(np.dot(random_shocks, L.T) + (expected_returns / 252 - 0.5 * np.diag(cov_matrix) / 252))
 
-        # Calculer la valeur du portefeuille
+        # Calcul des multiplicateurs journaliers par actif : exp(drift + choc)
+        # drift approximé par expected_returns/252, la partie -0.5*var provient de la log-normalité
+        asset_multipliers = np.exp(np.dot(random_shocks, L.T) + (expected_returns / 252 - 0.5 * np.diag(cov_matrix) / 252))
+
+        # Calculer la valeur du portefeuille en appliquant les poids
         portfolio_value = initial_investment
-        for ret in daily_returns:
-            portfolio_value *= np.prod(ret)  # Supposant allocation égale pour simplification
+        for day_mult in asset_multipliers:
+            # On calcule la variation quotidienne du portefeuille comme la somme pondérée
+            # des multiplicateurs d'actifs (pondération par `weights`).
+            portfolio_mult = float(np.dot(weights, day_mult))
+            portfolio_value *= portfolio_mult
 
         final_values.append(portfolio_value)
 
@@ -48,6 +73,7 @@ def calculate_success_probability(final_values, target_amount):
     Returns:
     - float: probabilité de succès
     """
+    # Proportion de simulations atteignant ou dépassant l'objectif
     successes = np.sum(final_values >= target_amount)
     return successes / len(final_values)
 

@@ -12,6 +12,13 @@ from portfolio_optimizer import goal_based_optimization
 from monte_carlo import simulate_goal_success
 import numpy as np
 
+# Script principal
+# Ce fichier montre un exemple d'exécution bout-en-bout :
+# 1. récupération des données (via yfinance)
+# 2. calcul des rendements et statistiques
+# 3. optimisation goal-based pour plusieurs objectifs
+# 4. simulations Monte Carlo pour estimer la probabilité d'atteindre chaque objectif
+
 def main():
     # Exemple de tickers (indices ou ETFs)
     tickers = ['SPY', 'BND', 'GLD', 'QQQ']  # SP500, Bonds, Gold, Nasdaq
@@ -22,29 +29,18 @@ def main():
     returns = calculate_returns(data)
     stats = calculate_stats(returns)
 
+    # Construire les vecteurs attendus par l'optimiseur
     expected_returns = np.array(list(stats['expected_return'].values()))
     volatilities = np.array(list(stats['volatility'].values()))
 
-    # Matrice de covariance
-    cov_matrix = returns.cov().values * 252  # Annualisée
+    # Matrice de covariance annualisée (à partir des rendements quotidiens)
+    cov_matrix = returns.cov().values * 252
 
-    # Définir les objectifs
+    # Définir les objectifs (exemple)
     goals = [
-        {
-            'target_amount': 50000,
-            'horizon_years': 5,
-            'risk_tolerance': 0.2
-        },
-        {
-            'target_amount': 100000,
-            'horizon_years': 10,
-            'risk_tolerance': 0.1
-        },
-        {
-            'target_amount': 200000,
-            'horizon_years': 20,
-            'risk_tolerance': 0.05
-        }
+        {'target_amount': 50000, 'horizon_years': 5, 'risk_tolerance': 0.2},
+        {'target_amount': 100000, 'horizon_years': 10, 'risk_tolerance': 0.1},
+        {'target_amount': 200000, 'horizon_years': 20, 'risk_tolerance': 0.05}
     ]
 
     total_budget = 100000
@@ -53,11 +49,11 @@ def main():
     print("Optimisation des allocations...")
     allocations = goal_based_optimization(goals, expected_returns, cov_matrix, total_budget)
 
-    # Simulations Monte Carlo
+    # Simulations Monte Carlo pour estimer la probabilité d'atteindre chaque objectif
     print("Simulations Monte Carlo...")
     success_probs = simulate_goal_success(goals, expected_returns, cov_matrix, total_budget)
 
-    # Afficher les résultats
+    # Afficher les résultats de manière lisible
     print("\n=== RÉSULTATS ===")
     for goal_name, alloc in allocations.items():
         print(f"\n{goal_name.upper()}:")

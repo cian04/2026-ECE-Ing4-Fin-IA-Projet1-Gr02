@@ -2,32 +2,35 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 
+
 def optimize_portfolio(expected_returns, cov_matrix, risk_tolerance=0.1, constraints=None):
     """
-    Optimise l'allocation de portefeuille en utilisant la maximisation du ratio de Sharpe.
+    Résout un problème d'optimisation quadratique simple pour déterminer
+    les poids d'un portefeuille qui maximisent le trade-off rendement/risque.
 
-    Parameters:
-    - expected_returns: np.array, rendements attendus
-    - cov_matrix: np.array, matrice de covariance
-    - risk_tolerance: float, tolérance au risque (lambda)
-    - constraints: dict, contraintes supplémentaires
+    Formulation : Maximize (mu^T w - lambda * w^T Sigma w)
 
-    Returns:
-    - dict: poids optimaux et métriques
+    Arguments :
+    - expected_returns: np.array shape (n,) des rendements annuels attendus
+    - cov_matrix: np.array shape (n,n) matrice de covariance annualisée
+    - risk_tolerance: float, coefficient lambda (plus grand => plus d'aversion au risque)
+    - constraints: dict optionnel contenant 'min_weights' et/ou 'max_weights'
+
+    Retourne un dict contenant les poids optimaux et quelques métriques.
     """
     n = len(expected_returns)
     w = cp.Variable(n)
 
-    # Objectif : maximiser rendement attendu - lambda * variance
+    # Objectif : maximiser rendement attendu moins pénalité variance
     objective = cp.Maximize(expected_returns @ w - risk_tolerance * cp.quad_form(w, cov_matrix))
 
-    # Contraintes de base
+    # Contraintes de base : sommes des poids = 1 et pas de positions short
     constraints_list = [
-        cp.sum(w) == 1,  # Somme des poids = 1
-        w >= 0  # Pas de vente à découvert
+        cp.sum(w) == 1,
+        w >= 0
     ]
 
-    # Ajouter contraintes personnalisées si fournies
+    # Contraintes optionnelles (min/max par actif)
     if constraints:
         if 'min_weights' in constraints:
             for i, min_w in enumerate(constraints['min_weights']):
@@ -40,6 +43,7 @@ def optimize_portfolio(expected_returns, cov_matrix, risk_tolerance=0.1, constra
     prob.solve()
 
     if prob.status != cp.OPTIMAL:
+        # Si l'optimiseur échoue, on lève une erreur explicite
         raise ValueError("Problème d'optimisation non résoluble")
 
     weights = w.value
@@ -66,17 +70,17 @@ def goal_based_optimization(goals, expected_returns, cov_matrix, total_budget=10
     Returns:
     - dict: allocations par objectif
     """
-    # Allouer le budget proportionnellement aux montants cibles
+    # Allouer le budget proportionnellement aux montants cibles fournis
     total_target = sum([goal['target_amount'] for goal in goals])
     allocations = {}
     for i, goal in enumerate(goals):
         # Budget proportionnel au montant cible
         budget_per_goal = total_budget * (goal['target_amount'] / total_target)
 
-        # Ajuster la tolérance au risque basée sur l'horizon
+        # Ajuster la tolérance au risque basée sur l'horizon (ex : diversification temporelle)
         adjusted_risk = goal['risk_tolerance'] / np.sqrt(goal['horizon_years'])
 
-        # Ajouter des contraintes de diversification
+        # Contraintes simples pour forcer une diversification minimale et éviter une concentration extrême
         constraints = {
             'min_weights': [0.05] * len(expected_returns),  # Min 5% par actif
             'max_weights': [0.6] * len(expected_returns)    # Max 60% par actif

@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
+# Module: data_fetcher
+# Fonctions utilitaires pour récupérer des prix historiques et calculer
+# des rendements/ statistiques annuelles. Ce module isole l'I/O réseau
+# (yfinance) du reste du code afin que les autres composants puissent
+# fonctionner avec des données synthétiques ou mockées pendant les tests.
+
 def get_historical_data(tickers, start_date=None, end_date=None, period="5y"):
     """
     Récupère les données historiques pour une liste de tickers.
@@ -16,18 +22,21 @@ def get_historical_data(tickers, start_date=None, end_date=None, period="5y"):
     Returns:
     - dict: dictionnaire avec les données par ticker
     """
+    # Par défaut : 5 ans jusqu'à aujourd'hui
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365*5)).strftime('%Y-%m-%d')
     if end_date is None:
         end_date = datetime.now().strftime('%Y-%m-%d')
 
     data = {}
+    # Récupère la série des prix de clôture pour chaque ticker
     for ticker in tickers:
         try:
             stock = yf.Ticker(ticker)
             hist = stock.history(start=start_date, end=end_date)
             data[ticker] = hist['Close']
         except Exception as e:
+            # En cas d'erreur réseau ou ticker invalide, renvoyer une série vide
             print(f"Erreur pour {ticker}: {e}")
             data[ticker] = pd.Series(dtype=float)
 
@@ -43,7 +52,9 @@ def calculate_returns(data):
     Returns:
     - pd.DataFrame: rendements quotidiens
     """
+    # Convertit le dict de séries en DataFrame aligné par date
     df = pd.DataFrame(data)
+    # Rendements quotidiens (pct_change) puis suppression des NaN initiaux
     returns = df.pct_change().dropna()
     return returns
 
@@ -57,6 +68,7 @@ def calculate_stats(returns):
     Returns:
     - dict: moyennes et volatilités par ticker
     """
+    # Moyenne et écart-type annualisés
     annual_returns = returns.mean() * 252  # 252 jours de trading par an
     annual_volatility = returns.std() * np.sqrt(252)
 
