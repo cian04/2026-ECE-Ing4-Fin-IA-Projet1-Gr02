@@ -1,0 +1,19 @@
+Sources :
+
+OR-Tools :
+
+https://developers.google.com/optimization/reference/python/sat/python/cp_model
+https://or-tools.github.io/docs/pdoc/ortools/sat/python/cp_model.html
+
+Coloration de carte:
+
+https://how-to.aimms.com/Articles/226/226-color-a-map-with-constraint-programming.html
+
+NetworkX: 
+
+https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spring_layout.html
+https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx_labels.html
+
+Article : Tout graphe est 4-colorable
+
+https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society-new-series/volume-82/issue-5/Every-planar-map-is-four-colorable/bams/1183538218.full
