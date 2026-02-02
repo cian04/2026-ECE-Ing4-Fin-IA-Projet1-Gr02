@@ -1,0 +1,10 @@
+{
+  "teams": ["A", "B", "C", "D", "E", "F", "G", "H"],
+  "days": 7,
+  "max_away_streak": 2,
+  "unavailable_home": {
+    "A": [2],
+    "D": [4],
+    "G": [1, 6]
+  }
+}

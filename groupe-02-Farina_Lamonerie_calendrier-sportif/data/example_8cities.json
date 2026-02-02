@@ -1,0 +1,42 @@
+{
+  "teams": ["Paris", "Lille", "Strasbourg", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes"],
+  "days": 7,
+
+  "max_away_streak": 2,
+  "max_home_streak": 2,
+
+  "max_consec_away_travel": 600,
+
+  "unavailable_home": {
+    "Paris": [2],
+    "Marseille": [4],
+    "Lille": [6]
+  },
+
+  "distances": {
+    "Paris": {
+      "Paris": 0, "Lille": 220, "Strasbourg": 490, "Lyon": 470, "Marseille": 780, "Toulouse": 680, "Bordeaux": 590, "Nantes": 385
+    },
+    "Lille": {
+      "Paris": 220, "Lille": 0, "Strasbourg": 520, "Lyon": 690, "Marseille": 1010, "Toulouse": 920, "Bordeaux": 800, "Nantes": 600
+    },
+    "Strasbourg": {
+      "Paris": 490, "Lille": 520, "Strasbourg": 0, "Lyon": 500, "Marseille": 800, "Toulouse": 900, "Bordeaux": 950, "Nantes": 820
+    },
+    "Lyon": {
+      "Paris": 470, "Lille": 690, "Strasbourg": 500, "Lyon": 0, "Marseille": 320, "Toulouse": 540, "Bordeaux": 560, "Nantes": 610
+    },
+    "Marseille": {
+      "Paris": 780, "Lille": 1010, "Strasbourg": 800, "Lyon": 320, "Marseille": 0, "Toulouse": 410, "Bordeaux": 650, "Nantes": 900
+    },
+    "Toulouse": {
+      "Paris": 680, "Lille": 920, "Strasbourg": 900, "Lyon": 540, "Marseille": 410, "Toulouse": 0, "Bordeaux": 250, "Nantes": 540
+    },
+    "Bordeaux": {
+      "Paris": 590, "Lille": 800, "Strasbourg": 950, "Lyon": 560, "Marseille": 650, "Toulouse": 250, "Bordeaux": 0, "Nantes": 340
+    },
+    "Nantes": {
+      "Paris": 385, "Lille": 600, "Strasbourg": 820, "Lyon": 610, "Marseille": 900, "Toulouse": 540, "Bordeaux": 340, "Nantes": 0
+    }
+  }
+}
