@@ -15,6 +15,16 @@ def optimize_portfolio(expected_returns, cov_matrix, risk_tolerance=0.1, constra
     Returns:
     - dict: poids optimaux et métriques
     """
+    expected_returns = np.asarray(expected_returns, dtype=float)
+    cov_matrix = np.asarray(cov_matrix, dtype=float)
+    if cov_matrix.ndim != 2 or cov_matrix.shape[0] != cov_matrix.shape[1]:
+        raise ValueError("La matrice de covariance doit être carrée.")
+    if expected_returns.shape[0] != cov_matrix.shape[0]:
+        raise ValueError("Le nombre de rendements attendus ne correspond pas à la covariance.")
+    if not np.isfinite(cov_matrix).all():
+        raise ValueError("La matrice de covariance contient des valeurs invalides (NaN/inf).")
+
+    cov_matrix = (cov_matrix + cov_matrix.T) / 2.0
     n = len(expected_returns)
     w = cp.Variable(n)
 
