@@ -1,3 +1,26 @@
+# Instructions d'environnement pour le dossier 64
+
+Environnement créé : `project_env` (Python 3.11).
+
+Commandes utiles (PowerShell) :
+
+```powershell
+# activer l'environnement
+conda activate project_env
+
+# vérifier les paquets installés
+python -m pip list
+
+# si besoin d'installer un paquet supplémentaire via conda (ex. cvxpy depuis conda-forge)
+conda install -n project_env -c conda-forge cvxpy -y
+
+# installer via pip (ex. yfinance, streamlit)
+conda run -n project_env pip install yfinance streamlit
+```
+
+Remarques :
+- `cvxpy` peut nécessiter une version de Python < 3.12 ; l'environnement `project_env` utilise Python 3.11 pour assurer la compatibilité.
+- Si vous préférez un autre nom d'environnement ou une installation système différente, dites-le et j'adapterai les instructions.
 # Robo-advisor : optimisation de portefeuille goal-based
 
 (ECE – Ing4 Finance).

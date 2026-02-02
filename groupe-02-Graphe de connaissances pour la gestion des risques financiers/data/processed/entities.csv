@@ -1,0 +1,22 @@
+entity_id,entity_type,entity_text,created_at
+COMPANY_1,COMPANY,BNP Paribas,2026-01-29T13:53:20.747461
+COMPANY_2,COMPANY,Société Générale,2026-01-29T13:53:20.747461
+COMPANY_3,COMPANY,Crédit Agricole,2026-01-29T13:53:20.747461
+COMPANY_4,COMPANY,AXA,2026-01-29T13:53:20.748452
+COMPANY_5,COMPANY,TotalEnergies,2026-01-29T13:53:20.748452
+COMPANY_6,COMPANY,Orange,2026-01-29T13:53:20.748452
+COMPANY_7,COMPANY,Airbus,2026-01-29T13:53:20.748452
+COMPANY_8,COMPANY,LVMH,2026-01-29T13:53:20.748452
+EVENT_9,EVENT,BNP Paribas dénonce une cyberattaque majeure affectant ses systèmes,2026-01-29T13:53:20.748452
+EVENT_10,EVENT,Société Générale subit une perte de 50 millions dans une fraude interne,2026-01-29T13:53:20.748452
+EVENT_11,EVENT,Crédit Agricole : nouveau scandale de conformité détecté,2026-01-29T13:53:20.748452
+EVENT_12,EVENT,AXA annonce une hausse de ses réserves suite à une catastrophe naturelle,2026-01-29T13:53:20.748452
+EVENT_13,EVENT,TotalEnergies face à de nouvelles sanctions environnementales,2026-01-29T13:53:20.748452
+EVENT_14,EVENT,BNP Paribas lance une enquête après la fuite de données client,2026-01-29T13:53:20.748452
+EVENT_15,EVENT,Société Générale déclare un risque opérationnel majeur,2026-01-29T13:53:20.749488
+EVENT_16,EVENT,Orange : rupture de service dans le réseau fibre optique,2026-01-29T13:53:20.749488
+EVENT_17,EVENT,Airbus confronté à une disruption majeure de sa chaîne d'approvisionnement,2026-01-29T13:53:20.749488
+EVENT_18,EVENT,LVMH : associée à BNP Paribas dans le scandale de cyberattaque,2026-01-29T13:53:20.749488
+RISK_OPERATIONAL,RISK,Risque : cyberattaque,2026-01-29T13:53:20.749488
+RISK_REPUTATION,RISK,Risque : scandale,2026-01-29T13:53:20.749488
+RISK_LEGAL,RISK,Risque : sanction,2026-01-29T13:53:20.749488
