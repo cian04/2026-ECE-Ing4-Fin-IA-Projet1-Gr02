@@ -1,4 +1,4 @@
-# 📅 Génération de calendrier sportif — CP-SAT & MiniZinc
+# Génération de calendrier sportif — CP-SAT & MiniZinc
 
 Projet d’optimisation de calendrier de championnat (type round-robin) réalisé dans le cadre du module IA / Programmation par contraintes.
 
