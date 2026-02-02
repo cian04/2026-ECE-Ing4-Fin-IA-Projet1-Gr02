@@ -21,17 +21,17 @@ st.sidebar.header("Paramètres d'Investissement")
 # Sélection des actifs
 tickers = st.sidebar.multiselect(
     "Sélectionnez les actifs",
-    ['SPY', 'BND', 'GLD', 'QQQ', 'VTI', 'VEA', 'VWO'],
-    default=['SPY', 'BND', 'GLD', 'QQQ']
+    ['SPY', 'EXSA.DE', 'SLV'],
+    default=['SPY', 'EXSA.DE', 'SLV']
 )
 
 # Budget total
 total_budget = st.sidebar.number_input(
     "Budget total (€)",
-    min_value=10000,
+    min_value=2000,
     max_value=1000000,
-    value=100000,
-    step=10000
+    value=2000,
+    step=100
 )
 
 # Objectifs
@@ -54,6 +54,17 @@ for i in range(num_goals):
         'risk_tolerance': risk
     })
 
+# Simulation
+st.sidebar.header("Simulation")
+num_simulations = st.sidebar.number_input(
+    "Nombre de simulations",
+    min_value=1000,
+    max_value=50000,
+    value=10000,
+    step=1000
+)
+show_sim_details = st.sidebar.checkbox("Afficher le détail des calculs", value=False)
+
 # Bouton de calcul
 if st.sidebar.button("Calculer l'optimisation", type="primary"):
     with st.spinner("Récupération des données..."):
@@ -62,17 +73,52 @@ if st.sidebar.button("Calculer l'optimisation", type="primary"):
         returns = calculate_returns(data)
         stats = calculate_stats(returns)
 
+    if returns.empty:
+        st.error("Aucune donnée historique disponible. Vérifiez les symboles et réessayez.")
+        st.stop()
+
     # Préparation des données pour l'optimisation
     expected_returns = np.array([stats['expected_return'][t] for t in tickers])
     cov_matrix = returns.cov().values * 252
 
+    if not np.isfinite(expected_returns).all():
+        st.error("Les rendements attendus contiennent des valeurs invalides.")
+        st.stop()
+
     # Optimisation
     with st.spinner("Optimisation en cours..."):
-        allocations = goal_based_optimization(goals, expected_returns, cov_matrix, total_budget)
+        try:
+            allocations = goal_based_optimization(goals, expected_returns, cov_matrix, total_budget)
+        except ValueError as exc:
+            st.error(f"Erreur d'optimisation: {exc}")
+            st.stop()
 
     # Simulations Monte Carlo
     with st.spinner("Simulations Monte Carlo..."):
-        success_probs = simulate_goal_success(goals, expected_returns, cov_matrix, total_budget)
+        goal_budgets = {goal_name: alloc['budget'] for goal_name, alloc in allocations.items()}
+        goal_weights = {goal_name: alloc['allocation']['weights'] for goal_name, alloc in allocations.items()}
+        if show_sim_details:
+            success_probs, sim_details = simulate_goal_success(
+                goals,
+                expected_returns,
+                cov_matrix,
+                total_budget,
+                num_simulations=num_simulations,
+                goal_budgets=goal_budgets,
+                goal_weights=goal_weights,
+                return_details=True
+            )
+        else:
+            success_probs = simulate_goal_success(
+                goals,
+                expected_returns,
+                cov_matrix,
+                total_budget,
+                num_simulations=num_simulations,
+                goal_budgets=goal_budgets,
+                goal_weights=goal_weights
+            )
+            sim_details = None
 
     # Affichage des résultats
     st.header("📊 Résultats de l'Optimisation")
@@ -112,6 +158,44 @@ if st.sidebar.button("Calculer l'optimisation", type="primary"):
                 title=f"Allocation pour Objectif {goal_idx+1}"
             )
             st.plotly_chart(fig, use_container_width=True)
+
+            if show_sim_details and sim_details and goal_name in sim_details:
+                details = sim_details[goal_name]
+                st.markdown("**Détails de la simulation**")
+                dcol1, dcol2, dcol3, dcol4 = st.columns(4)
+                with dcol1:
+                    st.metric("Simulations", f"{details['num_simulations']:,}".replace(',', ' '))
+                with dcol2:
+                    st.metric("Jours simulés", f"{details['num_days']:,}".replace(',', ' '))
+                with dcol3:
+                    st.metric("Budget simulé", f"{details['initial_investment']:,.0f}€")
+                with dcol4:
+                    st.metric("Succès", f"{details['successes']:,}".replace(',', ' '))
+
+                summary = details['summary']
+                summary_df = pd.DataFrame({
+                    'Statistique': ['Min', 'P10', 'Médiane', 'Moyenne', 'P90', 'Max', 'Écart-type'],
+                    'Valeur (€)': [
+                        summary['min'],
+                        summary['p10'],
+                        summary['median'],
+                        summary['mean'],
+                        summary['p90'],
+                        summary['max'],
+                        summary['std']
+                    ]
+                })
+                st.dataframe(
+                    summary_df.style.format({'Valeur (€)': '{:,.0f}'}),
+                    use_container_width=True
+                )
+
+                fig = px.histogram(
+                    x=details['final_values'],
+                    nbins=50,
+                    title="Distribution des valeurs finales"
+                )
+                st.plotly_chart(fig, use_container_width=True)
 
     # Graphique des probabilités de succès
     st.header("📈 Probabilités de Succès")

@@ -9,12 +9,12 @@ sys.path.append(os.path.dirname(__file__))
 
 from data_fetcher import get_historical_data, calculate_returns, calculate_stats
 from portfolio_optimizer import goal_based_optimization
-from monte_carlo import simulate_goal_success
+from monte_carlo import simulate_goal_success, save_monte_carlo_paths_plot
 import numpy as np
 
 def main():
     # Exemple de tickers (indices ou ETFs)
-    tickers = ['SPY', 'BND', 'GLD', 'QQQ']  # SP500, Bonds, Gold, Nasdaq
+    tickers = ['SPY', 'EXSA.DE', 'SLV']  # S&P 500 ETF, STOXX Europe 600, Physical Silver ETF
 
     # Récupérer les données
     print("Récupération des données historiques...")
@@ -22,11 +22,19 @@ def main():
     returns = calculate_returns(data)
     stats = calculate_stats(returns)
 
+    if returns.empty:
+        print("Erreur: aucune donnée historique disponible. Vérifiez les symboles.")
+        sys.exit(1)
+
     expected_returns = np.array(list(stats['expected_return'].values()))
     volatilities = np.array(list(stats['volatility'].values()))
 
     # Matrice de covariance
     cov_matrix = returns.cov().values * 252  # Annualisée
+
+    if not np.isfinite(expected_returns).all():
+        print("Erreur: rendements attendus invalides (NaN/inf).")
+        sys.exit(1)
 
     # Définir les objectifs
     goals = [
@@ -47,15 +55,47 @@ def main():
         }
     ]
 
-    total_budget = 100000
+    total_budget = 2000
 
     # Optimisation
     print("Optimisation des allocations...")
-    allocations = goal_based_optimization(goals, expected_returns, cov_matrix, total_budget)
+    try:
+        allocations = goal_based_optimization(goals, expected_returns, cov_matrix, total_budget)
+    except ValueError as exc:
+        print(f"Erreur d'optimisation: {exc}")
+        sys.exit(1)
 
     # Simulations Monte Carlo
     print("Simulations Monte Carlo...")
-    success_probs = simulate_goal_success(goals, expected_returns, cov_matrix, total_budget)
+    goal_budgets = {goal_name: alloc['budget'] for goal_name, alloc in allocations.items()}
+    goal_weights = {goal_name: alloc['allocation']['weights'] for goal_name, alloc in allocations.items()}
+    success_probs = simulate_goal_success(
+        goals,
+        expected_returns,
+        cov_matrix,
+        total_budget,
+        goal_budgets=goal_budgets,
+        goal_weights=goal_weights
+    )
+
+    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+    num_simulations_plot = 1000
+    for goal_name, alloc in allocations.items():
+        goal_idx = int(goal_name.split('_')[1]) - 1
+        goal = goals[goal_idx]
+        filename = f"monte_carlo_paths_{goal_name}.png"
+        plot_path = save_monte_carlo_paths_plot(
+            expected_returns,
+            cov_matrix,
+            alloc['budget'],
+            goal['horizon_years'],
+            data_dir,
+            filename,
+            num_simulations=num_simulations_plot,
+            weights=alloc['allocation']['weights']
+        )
+        if plot_path:
+            print(f"Graphique Monte Carlo sauvegarde: {plot_path}")
 
     # Afficher les résultats
     print("\n=== RÉSULTATS ===")
