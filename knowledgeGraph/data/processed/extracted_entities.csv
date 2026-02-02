@@ -1,0 +1,22 @@
+entity_id,entity_type,entity_text,source
+COMPANY_1,COMPANY,BNP Paribas,data_source
+COMPANY_2,COMPANY,Société Générale,data_source
+COMPANY_3,COMPANY,Crédit Agricole,data_source
+COMPANY_4,COMPANY,AXA,data_source
+COMPANY_5,COMPANY,TotalEnergies,data_source
+COMPANY_6,COMPANY,Orange,data_source
+COMPANY_7,COMPANY,Airbus,data_source
+COMPANY_8,COMPANY,LVMH,data_source
+EVENT_9,EVENT,BNP Paribas dénonce une cyberattaque majeure affectant ses systèmes,news_article
+EVENT_10,EVENT,Société Générale subit une perte de 50 millions dans une fraude interne,news_article
+EVENT_11,EVENT,Crédit Agricole : nouveau scandale de conformité détecté,news_article
+EVENT_12,EVENT,AXA annonce une hausse de ses réserves suite à une catastrophe naturelle,news_article
+EVENT_13,EVENT,TotalEnergies face à de nouvelles sanctions environnementales,news_article
+EVENT_14,EVENT,BNP Paribas lance une enquête après la fuite de données client,news_article
+EVENT_15,EVENT,Société Générale déclare un risque opérationnel majeur,news_article
+EVENT_16,EVENT,Orange : rupture de service dans le réseau fibre optique,news_article
+EVENT_17,EVENT,Airbus confronté à une disruption majeure de sa chaîne d'approvisionnement,news_article
+EVENT_18,EVENT,LVMH : associée à BNP Paribas dans le scandale de cyberattaque,news_article
+RISK_OPERATIONAL,RISK,Risque : cyberattaque,keyword_detection
+RISK_REPUTATION,RISK,Risque : scandale,keyword_detection
+RISK_LEGAL,RISK,Risque : sanction,keyword_detection
