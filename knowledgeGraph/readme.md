@@ -4,7 +4,8 @@ Projet de master en Intelligence Artificielle Exploratoire et Symbolique - ECE 2
 
 ## 📋 Description du Projet
 
-Ce projet implémente un **graphe de connaissances financier** permettant de modéliser les relations complexes entre entités (entreprises, personnes, événements) pour identifier et propager les risques financiers. 
+Ce projet implémente un graphe de connaissances financier permettant de modéliser les relations complexes entre entités (entreprises, personnes, événements) pour identifier et propager les risques financiers. 
+Par relations complexes entre entités ici: Cela désigne des liens multiples et en chaîne entre entreprises, personnes et événements, où un risque chez l’un peut affecter les autres.
 
 L'approche adoptée est **neuro-symbolique**, combinant :
 - 🧠 **Raisonnement sur graphes** : propagation de risques à travers les relations
@@ -37,55 +38,42 @@ L'approche adoptée est **neuro-symbolique**, combinant :
 4. **SEMANTiCS 2024** - Knowledge Graphs in the Age of LLMs and Neuro-Symbolic AI
    - _IOS Press_
 
-## 🛠️ Architecture Prévue
+## 🛠️ Architecture (réelle)
 
 ### Stack Technologique
 
 | Composant | Technologie | Rôle |
 |-----------|-------------|------|
-| **Base de Données Graphe** | Neo4j / Amazon Neptune | Stockage des entités et relations |
-| **Apprentissage sur Graphes** | PyKEEN / DGL-KE | Embeddings et prédiction de liens |
-| **Extraction d'Entités** | spaCy / Stanza | NER financière automatisée |
-| **Visualisation** | Dash / Streamlit / Cytoscape.js | Interface interactive |
-| **Langage** | Python 3.9+ | Développement principal |
+| **Base de Données Graphe** | Neo4j | Stockage des entités et relations |
+| **Pipeline data** | Python + pandas | Nettoyage, extraction et export CSV/JSON |
+| **Récupération données** | yfinance, GNews | Prix boursiers et actualités |
+| **Propagation du risque** | BFS (Python) | Diffusion du risque avec décroissance |
+| **Visualisation** | Streamlit + PyVis | Dashboard + graphe interactif |
+| **ML (optionnel)** | PyKEEN + torch | Prédiction de liens (si utilisé) |
 
 ### Structure du Projet
 
 ```
 knowledgeGraph/
-├── README.md                    # Ce fichier
-├── src/
-│   ├── knowledge_graph/        # Core KG module
-│   │   ├── __init__.py
-│   │   ├── entities.py         # Définition des entités
-│   │   ├── relations.py        # Types de relations
-│   │   └── graph_builder.py    # Construction du graphe
-│   ├── risk_propagation/       # Algorithmes de propagation
-│   │   ├── __init__.py
-│   │   ├── propagator.py       # Moteur de propagation
-│   │   └── algorithms.py       # Différents algorithmes
-│   ├── ml_models/              # Modèles ML/GNN
-│   │   ├── __init__.py
-│   │   └── link_predictor.py   # Prédiction de liens
-│   └── visualization/          # Interfaces visuelles
-│       ├── __init__.py
-│       └── dashboard.py        # Dashboard Streamlit/Dash
+├── readme.md
 ├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_graph_construction.ipynb
-│   └── 03_risk_analysis.ipynb
+│   ├── pipeline_complete.py
+│   └── 04_graph_visualization.ipynb
+├── src/
+│   ├── knowledge_graph/        # construction et export Neo4j
+│   │   ├── graph_builder.py
+│   │   └── export_to_neo4j.py
+│   ├── risk_propagation/       # propagation du risque
+│   │   ├── propagator.py
+│   │   └── run_propagation.py
+│   ├── ml_models/              # optionnel
+│   │   └── link_predictor.py
+│   └── visualization/
+│       └── dashboard.py
 ├── data/
-│   ├── raw/                    # Données brutes
-│   └── processed/              # Données prétraitées
-├── docs/
-│   ├── architecture.md         # Documentation architecture
-│   ├── api_reference.md        # Référence API
-│   └── examples.md             # Exemples d'utilisation
-├── tests/
-│   ├── unit/
-│   └── integration/
-├── requirements.txt
-└── config.yaml
+│   ├── raw/
+│   └── processed/
+└── docs/
 ```
 
 ## 🚀 Installation & Configuration
@@ -107,33 +95,87 @@ cd knowledgeGraph
 python -m venv venv
 source venv/bin/activate  # Sur Windows: venv\Scripts\activate
 
-# 3. Installer les dépendances
-pip install -r requirements.txt
+# 3. Installer les dépendances (exemples)
+pip install pandas yfinance gnews neo4j streamlit pyvis
+```
 
-# 4. Initialiser la base de données graphe (si applicable)
-python -m src.setup.init_database
+## ▶️ Exécution par étapes
+
+```bash
+# Étapes 1-6 : pipeline complet
+python notebooks/pipeline_complete.py
+
+# Étape 7 : import Neo4j
+python src/knowledge_graph/export_to_neo4j.py
+
+# Étape 8 : propagation du risque (mot de passe via variable ou option)
+$env:NEO4J_PASSWORD = "<TON_MDP>"
+python src/risk_propagation/run_propagation.py
+
+# Dashboard
+streamlit run src/visualization/dashboard.py
 ```
 
 ## 📊 Données et Sources
 
-**À définir** : Sources de données financières
-- APIs publiques (Yahoo Finance, Alpha Vantage, etc.)
-- Données de presse financière
-- Reportages ESG et risques corporatifs
-- Données de crédits et défauts
+- **Prix boursiers** : Yahoo Finance via `yfinance`
+- **Actualités** : GNews via `gnews`
 
 ## 🧪 Tests
 
+Le projet dispose d'une suite de tests complète avec **21 tests** couvrant toutes les fonctionnalités principales.
+
+### Installation de pytest
+
+```bash
+pip install pytest
+```
+
+### Exécution des tests
+
 ```bash
 # Exécuter tous les tests
-pytest
+python -m pytest
 
-# Tests unitaires uniquement
-pytest tests/unit/
+# Tests avec affichage détaillé
+python -m pytest -v
 
-# Tests avec couverture
-pytest --cov=src tests/
+# Tests d'un module spécifique
+python -m pytest tests/unit/test_entities.py
+
+# Tests avec couverture de code
+pip install pytest-cov
+python -m pytest --cov=src tests/
 ```
+
+### Structure des tests
+
+```
+tests/
+├── conftest.py                    # Configuration pytest
+├── unit/                          # Tests unitaires
+│   ├── test_entities.py          # Entity, EntityType, EntityFactory (9 tests)
+│   ├── test_relations.py         # Relation, RelationType (4 tests)
+│   ├── test_graph_builder.py    # KnowledgeGraphBuilder (4 tests)
+│   └── test_propagator.py       # RiskPropagator (3 tests)
+└── integration/                   # Tests d'intégration
+    └── test_pipeline.py          # Pipeline complet (2 tests)
+```
+
+### Résultats des tests
+
+```
+========================= 21 passed in 1.43s ==========================
+✅ 21 tests passent
+❌ 0 test échoue
+```
+
+**Couverture** :
+- ✅ Création et sérialisation des entités
+- ✅ Création et validation des relations
+- ✅ Construction du graphe et export JSON
+- ✅ Algorithme de propagation de risque (logique BFS)
+- ✅ Pipeline d'intégration complet
 
 ## 📈 Résultats Attendus
 
@@ -146,7 +188,7 @@ pytest --cov=src tests/
 ## 👥 Équipe
 
 - Groupe 2 - Sujet 46
-- Membres: (À remplir)
+- Membre: MBWEBI FANDJA Donald Brownnell 
 
 ## 📅 Échéances
 
@@ -160,4 +202,4 @@ Ce projet est fourni dans le cadre du cursus ECE.
 
 ---
 
-**Dernière mise à jour** : 19 janvier 2026
+**Dernière mise à jour** : 02 février 2026
