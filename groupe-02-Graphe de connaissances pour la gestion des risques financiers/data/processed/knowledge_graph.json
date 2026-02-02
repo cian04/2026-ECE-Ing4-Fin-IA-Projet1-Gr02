@@ -1,0 +1,499 @@
+{
+  "nodes": [
+    {
+      "id": "COMPANY_1",
+      "label": "BNP Paribas",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_2",
+      "label": "Société Générale",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_3",
+      "label": "Crédit Agricole",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_4",
+      "label": "AXA",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_5",
+      "label": "TotalEnergies",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_6",
+      "label": "Orange",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_7",
+      "label": "Airbus",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "COMPANY_8",
+      "label": "LVMH",
+      "type": "COMPANY",
+      "metadata": {
+        "source": "data_source"
+      }
+    },
+    {
+      "id": "EVENT_9",
+      "label": "BNP Paribas dénonce une cyberattaque majeure affectant ses systèmes",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_10",
+      "label": "Société Générale subit une perte de 50 millions dans une fraude interne",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_11",
+      "label": "Crédit Agricole : nouveau scandale de conformité détecté",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_12",
+      "label": "AXA annonce une hausse de ses réserves suite à une catastrophe naturelle",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_13",
+      "label": "TotalEnergies face à de nouvelles sanctions environnementales",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_14",
+      "label": "BNP Paribas lance une enquête après la fuite de données client",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_15",
+      "label": "Société Générale déclare un risque opérationnel majeur",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_16",
+      "label": "Orange : rupture de service dans le réseau fibre optique",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_17",
+      "label": "Airbus confronté à une disruption majeure de sa chaîne d'approvisionnement",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "EVENT_18",
+      "label": "LVMH : associée à BNP Paribas dans le scandale de cyberattaque",
+      "type": "EVENT",
+      "metadata": {
+        "source": "news_article"
+      }
+    },
+    {
+      "id": "RISK_OPERATIONAL",
+      "label": "Risque : cyberattaque",
+      "type": "RISK",
+      "metadata": {
+        "source": "keyword_detection"
+      }
+    },
+    {
+      "id": "RISK_REPUTATION",
+      "label": "Risque : scandale",
+      "type": "RISK",
+      "metadata": {
+        "source": "keyword_detection"
+      }
+    },
+    {
+      "id": "RISK_LEGAL",
+      "label": "Risque : sanction",
+      "type": "RISK",
+      "metadata": {
+        "source": "keyword_detection"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "COMPANY_1",
+      "target": "EVENT_9",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_1",
+      "target": "EVENT_14",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_1",
+      "target": "EVENT_18",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_2",
+      "target": "EVENT_10",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_2",
+      "target": "EVENT_15",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_3",
+      "target": "EVENT_11",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_4",
+      "target": "EVENT_12",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_5",
+      "target": "EVENT_13",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_6",
+      "target": "EVENT_16",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_7",
+      "target": "EVENT_17",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "COMPANY_8",
+      "target": "EVENT_18",
+      "type": "impliquée_dans",
+      "confidence": 0.85,
+      "source_type": "COMPANY",
+      "target_type": "EVENT"
+    },
+    {
+      "source": "EVENT_9",
+      "target": "RISK_OPERATIONAL",
+      "type": "causée_par",
+      "confidence": 0.8,
+      "source_type": "EVENT",
+      "target_type": "RISK"
+    },
+    {
+      "source": "EVENT_11",
+      "target": "RISK_REPUTATION",
+      "type": "causée_par",
+      "confidence": 0.8,
+      "source_type": "EVENT",
+      "target_type": "RISK"
+    },
+    {
+      "source": "EVENT_13",
+      "target": "RISK_LEGAL",
+      "type": "causée_par",
+      "confidence": 0.8,
+      "source_type": "EVENT",
+      "target_type": "RISK"
+    },
+    {
+      "source": "EVENT_18",
+      "target": "RISK_OPERATIONAL",
+      "type": "causée_par",
+      "confidence": 0.8,
+      "source_type": "EVENT",
+      "target_type": "RISK"
+    },
+    {
+      "source": "EVENT_18",
+      "target": "RISK_REPUTATION",
+      "type": "causée_par",
+      "confidence": 0.8,
+      "source_type": "EVENT",
+      "target_type": "RISK"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_1",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_2",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_3",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_4",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_5",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_6",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_7",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_OPERATIONAL",
+      "target": "COMPANY_8",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_1",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_2",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_3",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_4",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_5",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_6",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_7",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_REPUTATION",
+      "target": "COMPANY_8",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_1",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_2",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_3",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_4",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_5",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_6",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_7",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    },
+    {
+      "source": "RISK_LEGAL",
+      "target": "COMPANY_8",
+      "type": "se_propage_à",
+      "confidence": 0.7,
+      "source_type": "RISK",
+      "target_type": "COMPANY"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-01-29T13:53:20.762453",
+    "num_entities": 21,
+    "num_relations": 40
+  }
+}
