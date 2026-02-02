@@ -1,0 +1,19 @@
+{
+  "teams": ["Paris", "Lyon", "Marseille", "Bordeaux", "Lille", "Nantes"],
+  "days": 5,
+  "max_away_streak": 2,
+  "max_home_streak": 2,
+  "max_consec_away_travel": 500,
+  "unavailable_home": {
+    "Paris": [2],
+    "Lille": [4]
+  },
+  "distances": {
+    "Paris": {"Paris":0, "Lyon":465, "Marseille":775, "Bordeaux":590, "Lille":225, "Nantes":385},
+    "Lyon": {"Paris":465, "Lyon":0, "Marseille":315, "Bordeaux":555, "Lille":690, "Nantes":600},
+    "Marseille": {"Paris":775, "Lyon":315, "Marseille":0, "Bordeaux":645, "Lille":1005, "Nantes":895},
+    "Bordeaux": {"Paris":590, "Lyon":555, "Marseille":645, "Bordeaux":0, "Lille":800, "Nantes":340},
+    "Lille": {"Paris":225, "Lyon":690, "Marseille":1005, "Bordeaux":800, "Lille":0, "Nantes":600},
+    "Nantes": {"Paris":385, "Lyon":600, "Marseille":895, "Bordeaux":340, "Lille":600, "Nantes":0}
+  }
+}
